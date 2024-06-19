@@ -77,5 +77,18 @@ namespace Activity.Repositories.Implementation {
             return result;
         }
 
+        public async Task<List<Models.Entities.Activity>> GetActivitiesByApiKeyAsync(string apiKey, string type) {
+            if (string.IsNullOrEmpty(type)) {
+                return await _context.Activities.Where(a => a.ApiKey.Value == apiKey).ToListAsync();
+            }
+
+            return await _context.Activities
+                .Where(a => a.ApiKey.Value == apiKey && a.Type.ToLower() == type.ToLower())
+                .ToListAsync();
+        }
+
+        public async Task<Models.Entities.Activity> GetActivityByApiKeyAndActivityIdAsync(string apiKey, Guid activityId) {
+            return await _context.Activities.FirstOrDefaultAsync(a => a.ApiKey.Value == apiKey && a.Id == activityId);
+        }
     }
 }

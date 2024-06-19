@@ -1,5 +1,4 @@
-﻿using Activity.Data;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Activity.Configuration {
@@ -11,18 +10,6 @@ namespace Activity.Configuration {
                 context.Result = new ContentResult() {
                     StatusCode = 401,
                     Content = "API Key was not provided"
-                };
-                return;
-            }
-
-            var dbContext = context.HttpContext.RequestServices.GetRequiredService<ApplicationDbContext>();
-            var apiKeySetting = await dbContext.ConfigurationSettings.FindAsync("ApiKey");
-            var apiKey = apiKeySetting?.Value;
-
-            if (apiKey == null || !apiKey.Equals(extractedApiKey)) {
-                context.Result = new ContentResult() {
-                    StatusCode = 403,
-                    Content = "Unauthorized Access"
                 };
                 return;
             }

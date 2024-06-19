@@ -48,13 +48,13 @@ namespace Activity.Services.Implementation {
             return dto;
         }
 
-        public async Task<ActivityByIdDto> GetActivityById(Guid id) {
+        public async Task<ActivityDto> GetActivityById(Guid id) {
             var result = await _activityRepository.GetActivityByIdAsync(id);
             if (result == null) {
                 return null;
             }
 
-            var activityDto = new ActivityByIdDto {
+            var activityDto = new ActivityDto {
                 Id = result.Id,
                 Title = result.Title,
                 Description = result.Description,
@@ -76,6 +76,54 @@ namespace Activity.Services.Implementation {
 
         public async Task<bool> UploadActivityImage(Guid id, IFormFile imageFile) {
             return await _activityRepository.UploadActivityImageAsync(id, imageFile);
+        }
+
+        public async Task<List<ActivityDto>> GetActivitiesByApiKey(string apiKey, string type) {
+            var result = await _activityRepository.GetActivitiesByApiKeyAsync(apiKey, type);
+            if (result == null) {
+                return null;
+            }
+
+            var dto = new List<ActivityDto>();
+            foreach (var item in result) {
+                var activityDto = new ActivityDto {
+                    Id = item.Id,
+                    Title = item.Title,
+                    Description = item.Description,
+                    Type = item.Type,
+                    StartTime = item.StartTime,
+                    EndTime = item.EndTime,
+                    Date = item.Date,
+                    Duration = CalculateDuration(item),
+                    Barometer = item.Barometer,
+                    Image = item.Image
+                };
+                dto.Add(activityDto);
+            }
+
+            return dto;
+        }
+
+        public async Task<ActivityDto> GetActivityByApiKeyAndActivityId(string apiKey, Guid activityId) {
+            var result = await _activityRepository.GetActivityByApiKeyAndActivityIdAsync(apiKey, activityId);
+            if (result == null) {
+                return null;
+            }
+
+            var activityDto = new ActivityDto {
+                Id = result.Id,
+                Title = result.Title,
+                Description = result.Description,
+                Type = result.Type,
+                StartTime = result.StartTime,
+                EndTime = result.EndTime,
+                Date = result.Date,
+                Duration = CalculateDuration(result),
+                Barometer = result.Barometer,
+                Image = result.Image
+            };
+
+            return activityDto;
         }
     }
 }

@@ -23,6 +23,8 @@ namespace Activity {
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IActivityRepository, ActivityRepository>();
             builder.Services.AddScoped<IActivityService, ActivityService>();
+            builder.Services.AddScoped<IApiKeyRepository, ApiKeyRepository>();
+            builder.Services.AddScoped<IApiKeyService, ApiKeyService>();
             builder.Services.AddSingleton<ApiKeyFilter>();
             builder.Services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder => {
                 builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();

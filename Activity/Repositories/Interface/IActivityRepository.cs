@@ -6,5 +6,7 @@
         Task<bool> UpdateActivityAsync(Models.Entities.Activity activity, Guid id);
         Task<bool> DeleteActivityAsync(Guid id);
         Task<bool> UploadActivityImageAsync(Guid id, IFormFile imageFile);
+        Task<List<Models.Entities.Activity>> GetActivitiesByApiKeyAsync(string apiKey, string type);
+        Task<Models.Entities.Activity> GetActivityByApiKeyAndActivityIdAsync(string apiKey, Guid activityId);
     }
 }

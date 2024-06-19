@@ -15,5 +15,8 @@ namespace Activity.Models.Entities {
         public DateTime Date { get; set; }
         public required string Barometer { get; set; }
         public byte[]? Image { get; set; }
+
+        public Guid ApiKeyId { get; set; }
+        public required ApiKey ApiKey { get; set; }
     }
 }
