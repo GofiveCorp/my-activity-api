@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Activity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240616055726_3")]
-    partial class _3
+    [Migration("20240620023521_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace Activity.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ApiKeyId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Barometer")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -43,6 +46,9 @@ namespace Activity.Migrations
 
                     b.Property<TimeOnly>("EndTime")
                         .HasColumnType("time");
+
+                    b.Property<byte[]>("Image")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time");
@@ -57,7 +63,40 @@ namespace Activity.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApiKeyId");
+
                     b.ToTable("Activities");
+                });
+
+            modelBuilder.Entity("Activity.Models.Entities.ApiKey", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ApiKeys");
+                });
+
+            modelBuilder.Entity("Activity.Models.Entities.Activity", b =>
+                {
+                    b.HasOne("Activity.Models.Entities.ApiKey", "ApiKey")
+                        .WithMany("Activities")
+                        .HasForeignKey("ApiKeyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApiKey");
+                });
+
+            modelBuilder.Entity("Activity.Models.Entities.ApiKey", b =>
+                {
+                    b.Navigation("Activities");
                 });
 #pragma warning restore 612, 618
         }
