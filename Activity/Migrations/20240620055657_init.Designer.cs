@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Activity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240620023521_init")]
+    [Migration("20240620055657_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -65,7 +65,7 @@ namespace Activity.Migrations
 
                     b.HasIndex("ApiKeyId");
 
-                    b.ToTable("Activities");
+                    b.ToTable("MyActivities");
                 });
 
             modelBuilder.Entity("Activity.Models.Entities.ApiKey", b =>
@@ -80,7 +80,7 @@ namespace Activity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApiKeys");
+                    b.ToTable("MyApiKeys");
                 });
 
             modelBuilder.Entity("Activity.Models.Entities.Activity", b =>

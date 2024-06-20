@@ -5,8 +5,8 @@ namespace Activity.Data {
     public class ApplicationDbContext : DbContext {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Models.Entities.Activity> Activities { get; set; }
-        public DbSet<ApiKey> ApiKeys { get; set; }
+        public DbSet<Models.Entities.Activity> MyActivities { get; set; }
+        public DbSet<ApiKey> MyApiKeys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Models.Entities.Activity>()

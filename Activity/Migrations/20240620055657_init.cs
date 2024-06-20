@@ -12,7 +12,7 @@ namespace Activity.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ApiKeys",
+                name: "MyApiKeys",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -20,11 +20,11 @@ namespace Activity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ApiKeys", x => x.Id);
+                    table.PrimaryKey("PK_MyApiKeys", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Activities",
+                name: "MyActivities",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -40,18 +40,18 @@ namespace Activity.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Activities", x => x.Id);
+                    table.PrimaryKey("PK_MyActivities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Activities_ApiKeys_ApiKeyId",
+                        name: "FK_MyActivities_MyApiKeys_ApiKeyId",
                         column: x => x.ApiKeyId,
-                        principalTable: "ApiKeys",
+                        principalTable: "MyApiKeys",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Activities_ApiKeyId",
-                table: "Activities",
+                name: "IX_MyActivities_ApiKeyId",
+                table: "MyActivities",
                 column: "ApiKeyId");
         }
 
@@ -59,10 +59,10 @@ namespace Activity.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Activities");
+                name: "MyActivities");
 
             migrationBuilder.DropTable(
-                name: "ApiKeys");
+                name: "MyApiKeys");
         }
     }
 }

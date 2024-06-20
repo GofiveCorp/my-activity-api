@@ -62,7 +62,7 @@ namespace Activity.Migrations
 
                     b.HasIndex("ApiKeyId");
 
-                    b.ToTable("Activities");
+                    b.ToTable("MyActivities");
                 });
 
             modelBuilder.Entity("Activity.Models.Entities.ApiKey", b =>
@@ -77,7 +77,7 @@ namespace Activity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ApiKeys");
+                    b.ToTable("MyApiKeys");
                 });
 
             modelBuilder.Entity("Activity.Models.Entities.Activity", b =>

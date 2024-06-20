@@ -12,7 +12,7 @@ namespace Activity.Repositories.Implementation {
         }
 
         public async Task<ApiKey> GetApiKeyByValueAsync(string apiKey) {
-            return await _context.ApiKeys.FirstOrDefaultAsync(n => n.Value == apiKey);
+            return await _context.MyApiKeys.FirstOrDefaultAsync(n => n.Value == apiKey);
         }
     }
 }

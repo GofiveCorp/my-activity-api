@@ -11,17 +11,17 @@ namespace Activity.Repositories.Implementation {
         }
 
         public async Task<Models.Entities.Activity> CreateActivityAsync(Models.Entities.Activity activity) {
-            await _context.Activities.AddAsync(activity);
+            await _context.MyActivities.AddAsync(activity);
             await _context.SaveChangesAsync();
             return activity;
         }
 
         public async Task<bool> DeleteActivityAsync(Guid id) {
             bool result = false;
-            var activity = await _context.Activities.FirstOrDefaultAsync(n => n.Id == id);
+            var activity = await _context.MyActivities.FirstOrDefaultAsync(n => n.Id == id);
 
             if (activity != null) {
-                _context.Activities.Remove(activity);
+                _context.MyActivities.Remove(activity);
                 await _context.SaveChangesAsync();
                 result = true;
             }
@@ -31,19 +31,19 @@ namespace Activity.Repositories.Implementation {
 
         public async Task<List<Models.Entities.Activity>> GetActivitiesAsync(string type) {
             if (string.IsNullOrEmpty(type)) {
-                return await _context.Activities.ToListAsync();
+                return await _context.MyActivities.ToListAsync();
             }
 
-            return await _context.Activities.Where(n => n.Type.ToLower() == type.ToLower()).ToListAsync();
+            return await _context.MyActivities.Where(n => n.Type.ToLower() == type.ToLower()).ToListAsync();
         }
 
         public async Task<Models.Entities.Activity> GetActivityByIdAsync(Guid id) {
-            return await _context.Activities.FirstOrDefaultAsync(n => n.Id == id);
+            return await _context.MyActivities.FirstOrDefaultAsync(n => n.Id == id);
         }
 
         public async Task<bool> UpdateActivityAsync(Models.Entities.Activity activity, Guid id) {
             bool result = false;
-            var existingActivity = await _context.Activities.FirstOrDefaultAsync(a => a.Id == id);
+            var existingActivity = await _context.MyActivities.FirstOrDefaultAsync(a => a.Id == id);
             if (existingActivity != null) {
                 existingActivity.Title = activity.Title;
                 existingActivity.Description = activity.Description;
@@ -62,7 +62,7 @@ namespace Activity.Repositories.Implementation {
 
         public async Task<bool> UploadActivityImageAsync(Guid id, IFormFile imageFile) {
             bool result = false;
-            var activity = await _context.Activities.FirstOrDefaultAsync(a => a.Id == id);
+            var activity = await _context.MyActivities.FirstOrDefaultAsync(a => a.Id == id);
             if (activity != null) {
                 if (imageFile != null && imageFile.Length > 0) {
                     using (var memoryStream = new MemoryStream()) {
@@ -79,16 +79,17 @@ namespace Activity.Repositories.Implementation {
 
         public async Task<List<Models.Entities.Activity>> GetActivitiesByApiKeyAsync(string apiKey, string type) {
             if (string.IsNullOrEmpty(type)) {
-                return await _context.Activities.Where(a => a.ApiKey.Value == apiKey).ToListAsync();
+                return await _context.MyActivities.Where(a => a.ApiKey.Value == apiKey).OrderBy(a => a.Date).ToListAsync();
             }
 
-            return await _context.Activities
+            return await _context.MyActivities
                 .Where(a => a.ApiKey.Value == apiKey && a.Type.ToLower() == type.ToLower())
+                .OrderBy(a => a.Date)
                 .ToListAsync();
         }
 
         public async Task<Models.Entities.Activity> GetActivityByApiKeyAndActivityIdAsync(string apiKey, Guid activityId) {
-            return await _context.Activities.FirstOrDefaultAsync(a => a.ApiKey.Value == apiKey && a.Id == activityId);
+            return await _context.MyActivities.FirstOrDefaultAsync(a => a.ApiKey.Value == apiKey && a.Id == activityId);
         }
     }
 }
