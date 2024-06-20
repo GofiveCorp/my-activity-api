@@ -24,7 +24,7 @@ namespace Activity.Controllers {
 
         [HttpGet]
         [Route("api-key")]
-        public async Task<IActionResult> GetApiKeyFromHeader([FromQuery] string type = "") {
+        public async Task<IActionResult> GetActivitiesByApiKey([FromQuery] string type = "") {
             var apiKey = HttpContext.Request.Headers["X-API-KEY"];
             var activities = await _activityService.GetActivitiesByApiKey(apiKey, type);
             return Ok(activities);
