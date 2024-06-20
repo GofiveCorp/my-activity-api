@@ -72,8 +72,25 @@ namespace Activity.Controllers {
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateActivity([FromBody] Models.Entities.Activity activity, Guid id) {
-            var result = await _activityService.UpdateActivity(activity, id);
+        public async Task<IActionResult> UpdateActivity([FromBody] ActivityDto activity, Guid id) {
+            var apiKey = HttpContext.Request.Headers["X-API-KEY"];
+            var apiKeyEntity = await _apiKeyService.GetApiKeyByValue(apiKey);
+            if (apiKeyEntity == null) {
+                return Unauthorized();
+            }
+
+            var activityEntity = new Models.Entities.Activity {
+                Title = activity.Title,
+                Description = activity.Description,
+                Type = activity.Type,
+                StartTime = activity.StartTime,
+                EndTime = activity.EndTime,
+                Date = activity.Date,
+                Barometer = activity.Barometer,
+                Image = activity.Image,
+                ApiKey = apiKeyEntity
+            };
+            var result = await _activityService.UpdateActivity(activityEntity, id);
 
             if (result) {
                 return NoContent();
